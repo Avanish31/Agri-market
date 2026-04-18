@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriMarket - Direct Farmer to Buyer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-brand">
+            <a href="/">🌾 AgriMarket</a>
+        </div>
+        <div class="nav-links">
+            <a href="/">Marketplace</a>
+            <% if (locals.user) { %>
+                <a href="/notifications" style="text-decoration: none;">🔔 Notifications</a>
+                <% if (user.role === 'farmer') { %>
+                    <a href="/farmer/dashboard">Dashboard</a>
+                    <a href="/farmer/analyze-market" style="text-decoration: none;">Analyze Market 📊</a>
+                    <a href="/farmer/add" class="btn btn-secondary">Add Produce</a>
+                <% } else { %>
+                    <a href="/cart">Cart 🛒</a>
+                <% } %>
+                <a href="/auth/signout" class="btn btn-secondary">Sign Out</a>
+            <% } else { %>
+                <a href="/auth/signin">Sign In</a>
+                <a href="/auth/signup" class="btn btn-primary">Sign Up</a>
+            <% } %>
+        </div>
+    </nav>
+    <main>

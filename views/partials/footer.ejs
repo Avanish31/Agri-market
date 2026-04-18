@@ -1,0 +1,22 @@
+    </main>
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> AgriMarket. All rights reserved. Connecting Farmers directly to Buyers.</p>
+    </footer>
+
+    <!-- Snackbar Container -->
+    <div id="snackbar"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <% if (locals.user) { %>
+    <script>
+        const socket = io({ query: { userId: '<%= user._id %>' } });
+        socket.on('notification', (msg) => {
+            const sb = document.getElementById("snackbar");
+            sb.textContent = msg;
+            sb.className = "show";
+            setTimeout(() => { sb.className = sb.className.replace("show", ""); }, 5000);
+        });
+    </script>
+    <% } %>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<%- include('../partials/header') %>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2>Your Cart 🛒</h2>
+</div>
+
+<div class="table-container">
+    <% if (cart && cart.products && cart.products.length > 0) { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Farmer</th>
+                    <th>Contact</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% let total = 0; %>
+                <% cart.products.forEach(product => { %>
+                    <% total += product.price; %>
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <img src="<%= product.imageUrl || 'https://via.placeholder.com/60' %>" alt="product" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;">
+                                <div>
+                                    <strong style="display: block;"><a href="/product/<%= product._id %>" style="color: var(--text-main); text-decoration: none;"><%= product.name %></a></strong>
+                                    <span style="font-size: 0.85rem; color: var(--text-muted);"><%= product.quantity %></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="font-weight: 600;">₹<%= product.price %></td>
+                        <td><%= product.farmer.name %></td>
+                        <td>
+                            <a href="mailto:<%= product.farmer.email %>" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">Contact</a>
+                        </td>
+                        <td>
+                            <form action="/cart/remove/<%= product._id %>" method="POST">
+                                <button type="submit" class="btn" style="background: #fee2e2; color: #991b1b; padding: 0.4rem 0.8rem; font-size: 0.85rem;">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        
+        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 2px solid #edf2f7; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 1.5rem;">Estimated Total:</h3>
+            <h3 style="font-size: 2rem; color: var(--primary);">₹<%= total %></h3>
+        </div>
+        <div style="text-align: right; margin-top: 1rem;">
+            <form action="/cart/checkout" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">Proceed to Checkout</button>
+            </form>
+        </div>
+    <% } else { %>
+        <div style="text-align: center; padding: 3rem;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">🛒</div>
+            <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 1.2rem;">Your cart is empty.</p>
+            <a href="/" class="btn btn-primary">Browse Marketplace</a>
+        </div>
+    <% } %>
+</div>
+
+<%- include('../partials/footer') %>
