@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const connectDB = require('./src/config/db');
 const http = require('http');
 const { Server } = require('socket.io');
-
+require('dotenv').config();
 // Initialize Express app
 const app = express();
 
@@ -51,11 +51,8 @@ io.on('connection', (socket) => {
 app.locals.io = io;
 app.locals.onlineUsers = onlineUsers;
 
-// Only start the server locally, Vercel will handle it in production
-if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
-    server.listen(PORT, () => {
-        console.log(`Server running on http://localhost:${PORT}`);
-    });
-}
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
 
 module.exports = app;

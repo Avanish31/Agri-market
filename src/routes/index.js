@@ -16,9 +16,9 @@ router.get('/', optionalAuth, async (req, res) => {
         if (req.query.type) {
             dbQuery.type = req.query.type;
         }
-
+        
         let products = await Product.find(dbQuery).populate('farmer', 'name').lean();
-
+        console.log(products);
         // Increment search count if search term is provided
         if (req.query.search && products.length > 0) {
             const productIds = products.map(p => p._id);

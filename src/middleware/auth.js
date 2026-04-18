@@ -12,7 +12,7 @@ const protect = async (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, 'supersecretkey_dev_only');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = await User.findById(decoded.id).select('-password');
         res.locals.user = req.user; // Make user available to EJS templates
         next();
@@ -35,7 +35,7 @@ const optionalAuth = async (req, res, next) => {
     let token = req.cookies.jwt;
     if (token) {
         try {
-            const decoded = jwt.verify(token, 'supersecretkey_dev_only');
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
             req.user = await User.findById(decoded.id).select('-password');
             res.locals.user = req.user;
         } catch (error) {

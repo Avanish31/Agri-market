@@ -31,7 +31,7 @@ router.post('/signup', async (req, res) => {
         const user = await User.create({ name, email, password, role, address, locationCoords });
         
         // Auto signin after signup
-        const token = jwt.sign({ id: user._id }, 'supersecretkey_dev_only', { expiresIn: '30d' });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
         res.cookie('jwt', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
 
         if (user.role === 'farmer') {
@@ -52,7 +52,7 @@ router.post('/signin', async (req, res) => {
         const user = await User.findOne({ email });
 
         if (user && (await user.comparePassword(password))) {
-            const token = jwt.sign({ id: user._id }, 'supersecretkey_dev_only', { expiresIn: '30d' });
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
             res.cookie('jwt', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
             
             if (user.role === 'farmer') {
